@@ -60,11 +60,31 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     needs: test
-
+  
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Placeholder Deploy
+  
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+  
+      - name: Verify AWS CLI
+        run: aws --version
+  
+      - name: Create Deployment Package
         run: |
-          echo "Phase 4 will deploy lsct-employee-login to AWS Lambda."
+          cd lambda
+          zip ../lambda.zip lsct-employee-login.py
+  
+      - name: Deploy to AWS Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name lsct-employee-login \
+            --zip-file fileb://lambda.zip
+  
+      - name: Deployment Complete
+        run: echo "Lambda deployed successfully!"
