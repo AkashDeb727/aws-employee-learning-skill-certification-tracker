@@ -1,7 +1,7 @@
 import json
 import boto3
 from botocore.exceptions import ClientError
-# CI/CD pipeline validation
+
 # DynamoDB
 dynamodb = boto3.resource("dynamodb")
 employees_table = dynamodb.Table("LSCT-Employees")
@@ -86,4 +86,3 @@ def lambda_handler(event, context):
                 "message": str(e)
             })
         }
-print)
