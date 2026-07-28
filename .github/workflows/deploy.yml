@@ -80,8 +80,9 @@ jobs:
 
       - name: Create Deployment Package
         run: |
+          cp lambda/lsct-employee-login.py lambda/lambda_function.py
           cd lambda
-          zip -r ../lambda.zip lsct-employee-login.py
+          zip -r ../lambda.zip lambda_function.py
 
       - name: Deploy to AWS Lambda
         run: |
