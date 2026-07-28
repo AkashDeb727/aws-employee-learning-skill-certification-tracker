@@ -86,3 +86,4 @@ def lambda_handler(event, context):
                 "message": str(e)
             })
         }
+print)
