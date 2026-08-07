@@ -69,40 +69,11 @@ Built on a **serverless architecture**, the platform uses **AWS Lambda**, **Amaz
 
 # 🤝 Project Contributors
 
-## Akash Deb
-
-**Core Development**
-- Quiz Engine
-- Quiz grading
-- Three-attempt limit
-- Certificate generation
-- Certificate verification
-- Certificate storage in Amazon S3
-
-**Additional Contributions**
-- Developed the complete HR and Employee frontend
-- Integrated the frontend with backend REST APIs
-- Implemented a GitHub Actions CI/CD pipeline for automated deployment of the Employee Login AWS Lambda function
-- Conducted Artillery load testing and performance analysis
-- Assisted in project integration and end-to-end testing
-
-## Ibrahim Ajmeri
-
-- Developed the Course Catalogue module
-- Implemented Course Creation APIs
-- Built the Course Assignment workflow
-- Configured Amazon SES notifications for course assignments
-- Managed employee, course, and assignment data using Amazon DynamoDB
-- Integrated course management and assignment functionality
-
-## Rushi Sanku
-
-- Developed the HR Skill Gap Dashboard
-- Implemented employee progress tracking
-- Built the department-wise skill matrix
-- Highlighted overdue course assignments
-- Configured weekly Amazon SNS alerts for HR administrators
-- Integrated dashboard APIs with the application
+| Contributor | Responsibilities |
+|-------------|------------------|
+| **Akash Deb** | • Developed the **Quiz Engine** with quiz grading and three-attempt validation.<br>• Implemented automated **PDF certificate generation**, public certificate verification, and secure certificate storage using **Amazon S3**.<br>• Designed and developed the complete **HR and Employee frontend**.<br>• Integrated the frontend with backend **REST APIs**.<br>• Implemented a **GitHub Actions CI/CD pipeline** for automated deployment of the **Employee Login AWS Lambda** function.<br>• Conducted **Artillery** load testing and performance analysis.<br>• Assisted in end-to-end project integration and testing. |
+| **Ibrahim Ajmeri** | • Developed the **Course Catalogue** module.<br>• Implemented Course Creation and Management APIs.<br>• Built the Course Assignment workflow.<br>• Configured **Amazon SES** email notifications for course assignments.<br>• Managed employee, course, and assignment data using **Amazon DynamoDB**.<br>• Integrated course management and assignment functionality with the application. |
+| **Rushi Sanku** | • Developed the **HR Skill Gap Dashboard**.<br>• Implemented employee progress tracking and department-wise skill matrix.<br>• Highlighted overdue course assignments.<br>• Configured weekly **Amazon SNS** alerts for HR administrators.<br>• Integrated dashboard APIs with the application. |
 
 ---
 
