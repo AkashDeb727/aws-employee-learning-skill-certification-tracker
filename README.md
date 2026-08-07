@@ -2,23 +2,24 @@
 
 ![GitHub Actions](https://github.com/AkashDeb727/aws-employee-learning-skill-certification-tracker/actions/workflows/deploy.yml/badge.svg)
 
-> **A fully serverless Learning Management System (LMS) built on Amazon Web Services (AWS).**
+> A cloud-native Learning Management System (LMS) built on AWS for employee training, assessments, progress tracking, and digital certification.
 
 ---
 
 # 📖 Overview
 
-The **Employee Learning & Skill Certification Tracker (LSCT)** is a cloud-native Learning Management System (LMS) designed to help organizations efficiently manage employee training, course assignments, assessments, and certifications. The application provides a centralized platform where HR administrators can create learning content, assign courses, monitor employee progress, and identify skill gaps across departments.
+The **Employee Learning & Skill Certification Tracker (LSCT)** is a cloud-native Learning Management System designed to help organizations manage employee training, course assignments, assessments, and certifications. HR administrators can create learning content, assign courses, monitor employee progress, and identify skill gaps across departments, while employees can complete assigned courses, take quizzes, track their progress, and download digitally generated certificates.
 
-Employees can access assigned courses, complete quizzes, track their learning progress, and receive digitally generated certificates upon successful completion. Each certificate is securely stored in Amazon S3 and can be verified through a public verification endpoint.
-
-Built using a **serverless architecture**, the application leverages **AWS Lambda**, **Amazon API Gateway**, **Amazon DynamoDB**, **Amazon S3**, and **Amazon SES** to deliver a scalable, event-driven solution without the need to manage traditional servers. The project also incorporates **GitHub Actions** for automated CI/CD and **Artillery** for performance and load testing.
+Built on a **serverless architecture**, the platform uses **AWS Lambda**, **Amazon API Gateway**, **Amazon DynamoDB**, **Amazon S3**, and **Amazon SES** to deliver a scalable, event-driven solution without managing traditional servers. The project also integrates **GitHub Actions** for CI/CD and **Artillery** for performance and load testing.
 
 ---
 
 # 🚀 Key Highlights
 
 - ☁️ Fully Serverless AWS Architecture
+- 💻 Dedicated HR and Employee Portals
+- 🔄 Automated CI/CD Pipeline using GitHub Actions
+- 📈 Performance & Load Testing using Artillery
 - ⚡ Event-Driven Backend using AWS Lambda
 - 🌐 RESTful APIs powered by Amazon API Gateway
 - 🗄️ Scalable NoSQL Database with Amazon DynamoDB
@@ -26,12 +27,10 @@ Built using a **serverless architecture**, the application leverages **AWS Lambd
 - ✅ Public Certificate Verification
 - 📧 Automated Email Notifications using Amazon SES
 - 💾 Secure Certificate Storage in Amazon S3
-- 🔄 Automated CI/CD Pipeline using GitHub Actions
-- 📈 Performance & Load Testing using Artillery
-- 💻 Dedicated HR and Employee Portals
 - 📊 Employee Progress Tracking & Skill Gap Analysis
 
 ---
+
 # ✨ Features
 
 ## 👨‍💼 HR Portal
@@ -44,8 +43,6 @@ Built using a **serverless architecture**, the application leverages **AWS Lambd
 - Track department-wise skill gaps
 - Verify employee certificates through the verification portal
 
----
-
 ## 👨‍💻 Employee Portal
 
 - Secure employee login
@@ -56,8 +53,6 @@ Built using a **serverless architecture**, the application leverages **AWS Lambd
 - Monitor course completion progress
 - Download generated course certificates
 
----
-
 ## ⚙️ Backend Features
 
 - Serverless REST APIs using Amazon API Gateway
@@ -67,7 +62,7 @@ Built using a **serverless architecture**, the application leverages **AWS Lambd
 - Public certificate verification API
 - Automated email notifications using Amazon SES
 - Certificate storage using Amazon S3
-- GitHub Actions CI/CD Pipeline
+- GitHub Actions CI/CD pipeline
 - Performance testing using Artillery
 
 ---
@@ -76,229 +71,99 @@ Built using a **serverless architecture**, the application leverages **AWS Lambd
 
 ## Akash Deb
 
-### Primary Responsibilities
+**Core Development**
+- Quiz Engine
+- Quiz grading
+- Three-attempt limit
+- Certificate generation
+- Certificate verification
+- Certificate storage in Amazon S3
 
-- Developed the Quiz Engine
-- Implemented quiz submission and grading logic
-- Enforced the three-attempt quiz limit
-- Developed automated PDF certificate generation
-- Implemented the public certificate verification API
-- Managed certificate storage using Amazon S3
-
-### Additional Contributions
-
+**Additional Contributions**
 - Developed the complete HR and Employee frontend
 - Integrated the frontend with backend REST APIs
-- Designed and implemented the GitHub Actions CI/CD pipeline
-- Automated Build → Test → Deploy workflow
+- Implemented a GitHub Actions CI/CD pipeline for automated deployment of the Employee Login AWS Lambda function
 - Conducted Artillery load testing and performance analysis
 - Assisted in project integration and end-to-end testing
 
----
-
 ## Ibrahim Ajmeri
-
-### Responsibilities
 
 - Developed the Course Catalogue module
 - Implemented Course Creation APIs
 - Built the Course Assignment workflow
-- Configured Amazon SES course assignment email notifications
+- Configured Amazon SES notifications for course assignments
 - Managed employee, course, and assignment data using Amazon DynamoDB
 - Integrated course management and assignment functionality
 
----
-
 ## Rushi Sanku
 
-### Responsibilities
-
 - Developed the HR Skill Gap Dashboard
-- Implemented Employee Progress Tracking
-- Built the Department-wise Skill Matrix
+- Implemented employee progress tracking
+- Built the department-wise skill matrix
 - Highlighted overdue course assignments
 - Configured weekly Amazon SNS alerts for HR administrators
 - Integrated dashboard APIs with the application
 
 ---
-# ✨ Features
 
-## 👨‍💼 HR Portal
+# 🏗️ Architecture
 
-- Interactive dashboard with employee learning statistics
-- Create, update, and manage training courses
-- Create and manage quizzes for each course
-- Assign courses to individual employees or departments
-- Monitor employee learning progress
-- Track department-wise skill gaps
-- Verify employee certificates through the verification portal
+The system follows a fully serverless, event-driven architecture on AWS. Amazon API Gateway exposes REST endpoints that trigger AWS Lambda functions for business logic, while Amazon DynamoDB provides low-latency data storage for employees, courses, and progress records. Amazon S3 stores generated certificates, and Amazon SES handles automated email notifications, resulting in a scalable system with no infrastructure to provision or manage.
+
+<p align="center">
+    <img src="architecture/architecture-diagram.png" alt="Architecture Diagram" width="100%">
+</p>
 
 ---
 
-## 👨‍💻 Employee Portal
+# 💻 Technology Stack
 
-- Secure employee login
-- Personalized learning dashboard
-- View assigned training courses
-- Access course learning materials
-- Attempt quizzes with attempt tracking
-- Monitor course completion progress
-- Download generated course certificates
-
----
-
-## ⚙️ Backend Features
-
-- Serverless REST APIs using Amazon API Gateway
-- Event-driven business logic with AWS Lambda
-- Secure data storage using Amazon DynamoDB
-- Automated PDF certificate generation
-- Public certificate verification API
-- Automated email notifications using Amazon SES
-- Certificate storage using Amazon S3
-- GitHub Actions CI/CD Pipeline
-- Performance testing using Artillery
+| Layer | Technology |
+|-------|------------|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | AWS Lambda (Node.js/Python) |
+| API Layer | Amazon API Gateway |
+| Database | Amazon DynamoDB |
+| Storage | Amazon S3 |
+| Notifications | Amazon SES |
+| Alerts | Amazon SNS |
+| CI/CD | GitHub Actions |
+| Load Testing | Artillery |
 
 ---
 
-# 🤝 Project Contributors
+# ☁️ AWS Services Used
 
-## Akash Deb
-
-### Primary Responsibilities
-
-- Developed the Quiz Engine
-- Implemented quiz submission and grading logic
-- Enforced the three-attempt quiz limit
-- Developed automated PDF certificate generation
-- Implemented the public certificate verification API
-- Managed certificate storage using Amazon S3
-
-### Additional Contributions
-
-- Developed the complete HR and Employee frontend
-- Integrated the frontend with backend REST APIs
-- Designed and implemented the GitHub Actions CI/CD pipeline
-- Automated Build → Test → Deploy workflow
-- Conducted Artillery load testing and performance analysis
-- Assisted in project integration and end-to-end testing
+| Service | Purpose |
+|---------|---------|
+| AWS Lambda | Event-driven backend business logic |
+| Amazon API Gateway | Exposes RESTful API endpoints |
+| Amazon DynamoDB | Stores employee, course, and progress data |
+| Amazon S3 | Stores generated certificates |
+| Amazon SES | Sends automated email notifications |
+| Amazon SNS | Sends weekly skill-gap alerts to HR administrators |
 
 ---
 
-## Ibrahim Ajmeri
+# 🔄 CI/CD Pipeline
 
-### Responsibilities
+The project uses **GitHub Actions** to automate the deployment of the **Employee Login AWS Lambda function**. The pipeline follows a Build → Test → Deploy workflow, using the **AWS CLI** to publish the updated function code on every relevant change. Only the Employee Login Lambda function is deployed automatically through this pipeline; other components are deployed manually.
 
-- Developed the Course Catalogue module
-- Implemented Course Creation APIs
-- Built the Course Assignment workflow
-- Configured Amazon SES course assignment email notifications
-- Managed employee, course, and assignment data using Amazon DynamoDB
-- Integrated course management and assignment functionality
-
----
-
-## Rushi Sanku
-
-### Responsibilities
-
-- Developed the HR Skill Gap Dashboard
-- Implemented Employee Progress Tracking
-- Built the Department-wise Skill Matrix
-- Highlighted overdue course assignments
-- Configured weekly Amazon SNS alerts for HR administrators
-- Integrated dashboard APIs with the application
-
----
-# ✨ Features
-
-## 👨‍💼 HR Portal
-
-- Interactive dashboard with employee learning statistics
-- Create, update, and manage training courses
-- Create and manage quizzes for each course
-- Assign courses to individual employees or departments
-- Monitor employee learning progress
-- Track department-wise skill gaps
-- Verify employee certificates through the verification portal
+```text
+GitHub Push
+     │
+     ▼
+Build Stage  →  Install dependencies, package function code
+     │
+     ▼
+Test Stage   →  Run automated tests
+     │
+     ▼
+Deploy Stage →  Deploy Employee Login Lambda via AWS CLI
+```
 
 ---
 
-## 👨‍💻 Employee Portal
-
-- Secure employee login
-- Personalized learning dashboard
-- View assigned training courses
-- Access course learning materials
-- Attempt quizzes with attempt tracking
-- Monitor course completion progress
-- Download generated course certificates
-
----
-
-## ⚙️ Backend Features
-
-- Serverless REST APIs using Amazon API Gateway
-- Event-driven business logic with AWS Lambda
-- Secure data storage using Amazon DynamoDB
-- Automated PDF certificate generation
-- Public certificate verification API
-- Automated email notifications using Amazon SES
-- Certificate storage using Amazon S3
-- GitHub Actions CI/CD Pipeline
-- Performance testing using Artillery
-
----
-
-# 🤝 Project Contributors
-
-## Akash Deb
-
-### Primary Responsibilities
-
-- Developed the Quiz Engine
-- Implemented quiz submission and grading logic
-- Enforced the three-attempt quiz limit
-- Developed automated PDF certificate generation
-- Implemented the public certificate verification API
-- Managed certificate storage using Amazon S3
-
-### Additional Contributions
-
-- Developed the complete HR and Employee frontend
-- Integrated the frontend with backend REST APIs
-- Designed and implemented the GitHub Actions CI/CD pipeline
-- Automated Build → Test → Deploy workflow
-- Conducted Artillery load testing and performance analysis
-- Assisted in project integration and end-to-end testing
-
----
-
-## Ibrahim Ajmeri
-
-### Responsibilities
-
-- Developed the Course Catalogue module
-- Implemented Course Creation APIs
-- Built the Course Assignment workflow
-- Configured Amazon SES course assignment email notifications
-- Managed employee, course, and assignment data using Amazon DynamoDB
-- Integrated course management and assignment functionality
-
----
-
-## Rushi Sanku
-
-### Responsibilities
-
-- Developed the HR Skill Gap Dashboard
-- Implemented Employee Progress Tracking
-- Built the Department-wise Skill Matrix
-- Highlighted overdue course assignments
-- Configured weekly Amazon SNS alerts for HR administrators
-- Integrated dashboard APIs with the application
-
----
 # 📈 Load Testing
 
 To evaluate the application's performance under concurrent user traffic, load testing was performed using **Artillery** against the application's primary REST API endpoint.
@@ -321,15 +186,14 @@ To evaluate the application's performance under concurrent user traffic, load te
 - P95 Latency
 - P99 Latency
 
-The test results were analyzed to evaluate application responsiveness, identify potential bottlenecks, and verify stable API performance under concurrent user requests.
-
-> **Load Test Report**
-
 <p align="center">
     <img src="screenshots/load-test/artillery-report.png" alt="Artillery Load Test Report" width="100%">
 </p>
 
+The load test helped validate the responsiveness of the serverless backend under concurrent traffic, surface potential bottlenecks, and confirm stable API performance under simulated real-world usage.
+
 ---
+
 # 📂 Project Structure
 
 ```text
