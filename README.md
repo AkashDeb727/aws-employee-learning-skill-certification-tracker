@@ -91,15 +91,16 @@ The system follows a fully serverless, event-driven architecture on AWS. Amazon 
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | HTML, CSS, JavaScript |
-| Backend | AWS Lambda (Node.js/Python) |
-| API Layer | Amazon API Gateway |
-| Database | Amazon DynamoDB |
-| Storage | Amazon S3 |
-| Notifications | Amazon SES |
-| Alerts | Amazon SNS |
-| CI/CD | GitHub Actions |
-| Load Testing | Artillery |
+| **Frontend** | HTML, CSS, JavaScript |
+| **Backend** | Python |
+| **Compute** | AWS Lambda |
+| **API Layer** | Amazon API Gateway |
+| **Database** | Amazon DynamoDB |
+| **Storage** | Amazon S3 |
+| **Notifications** | Amazon SES |
+| **Alerts** | Amazon SNS |
+| **CI/CD** | GitHub Actions |
+| **Load Testing** | Artillery |
 
 ---
 
@@ -121,16 +122,23 @@ The system follows a fully serverless, event-driven architecture on AWS. Amazon 
 The project uses **GitHub Actions** to automate the deployment of the **Employee Login AWS Lambda function**. The pipeline follows a Build → Test → Deploy workflow, using the **AWS CLI** to publish the updated function code on every relevant change. Only the Employee Login Lambda function is deployed automatically through this pipeline; other components are deployed manually.
 
 ```text
-GitHub Push
-     │
-     ▼
-Build Stage  →  Install dependencies, package function code
-     │
-     ▼
-Test Stage   →  Run automated tests
-     │
-     ▼
-Deploy Stage →  Deploy Employee Login Lambda via AWS CLI
+Developer
+    │
+    ▼
+Git Push
+    │
+    ▼
+GitHub Repository
+    │
+    ▼
+GitHub Actions
+    │
+    ├── Build
+    ├── Test
+    └── Deploy
+    │
+    ▼
+Employee Login Lambda
 ```
 
 ---
