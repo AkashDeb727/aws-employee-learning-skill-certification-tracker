@@ -1,0 +1,13 @@
+config:
+  target: "https://1jwu7qfyrb.execute-api.ap-south-1.amazonaws.com/prod"
+
+  phases:
+    - duration: 60
+      arrivalRate: 50
+      name: "50 Users Load Test"
+
+scenarios:
+  - name: "Employee Courses API"
+    flow:
+      - get:
+          url: "/employee/E001/courses"
