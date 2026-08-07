@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LSCT — Employee Portal</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<style>
+  :root{
+    --primary:#2563EB;
+    --secondary:#1E40AF;
+    --success:#10B981;
+    --warning:#F59E0B;
+    --danger:#EF4444;
+    --bg:#F8FAFC;
+    --sidebar-w:260px;
+    --border:#E2E8F0;
+    --text-muted:#64748B;
+    --text-dark:#0F172A;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    background:var(--bg);
+    color:var(--text-dark);
+    font-family:'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x:hidden;
+  }
+
+  /* ---------- NAVBAR ---------- */
+  .topbar{
+    height:64px;
+    background:#ffffff;
+    border-bottom:1px solid var(--border);
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:1040;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 1.25rem 0 0;
+  }
+  .topbar .brand{
+    width:var(--sidebar-w);
+    height:100%;
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    padding:0 1.25rem;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+    font-weight:700;
+    letter-spacing:.3px;
+  }
+  .brand .brand-badge{
+    width:36px; height:36px;
+    border-radius:10px;
+    background:rgba(255,255,255,.18);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem;
+  }
+  .brand-sub{
+    font-size:.68rem;
+    font-weight:500;
+    opacity:.85;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+  }
+  .topbar-right{
+    display:flex; align-items:center; gap:1rem;
+  }
+  .topbar-right .role-pill{
+    background:#EFF6FF;
+    color:var(--primary);
+    font-weight:600;
+    font-size:.8rem;
+    padding:.35rem .85rem;
+    border-radius:999px;
+    display:flex; align-items:center; gap:.4rem;
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    position:fixed;
+    top:64px; bottom:0; left:0;
+    width:var(--sidebar-w);
+    background:#ffffff;
+    border-right:1px solid var(--border);
+    padding:1rem .75rem;
+    overflow-y:auto;
+    z-index:1030;
+    transition:transform .25s ease;
+  }
+  .sidebar .nav-link{
+    color:var(--text-muted);
+    font-weight:500;
+    font-size:.92rem;
+    border-radius:10px;
+    padding:.65rem .85rem;
+    margin-bottom:.2rem;
+    display:flex; align-items:center; gap:.7rem;
+    transition:background .15s ease, color .15s ease;
+  }
+  .sidebar .nav-link i{ font-size:1.05rem; width:20px; text-align:center; }
+  .sidebar .nav-link:hover{ background:#F1F5F9; color:var(--text-dark); }
+  .sidebar .nav-link.active{
+    background:var(--primary);
+    color:#fff;
+    box-shadow:0 4px 10px rgba(37,99,235,.25);
+  }
+  .sidebar .nav-link.logout-link:hover{ background:#FEF2F2; color:var(--danger); }
+  .sidebar-section-label{
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    color:#94A3B8;
+    font-weight:700;
+    padding:.5rem .85rem .35rem;
+  }
+
+  .sidebar-toggle-btn{ display:none; }
+
+  /* ---------- MAIN ---------- */
+  .main-content{
+    margin-left:var(--sidebar-w);
+    margin-top:64px;
+    padding:1.75rem 2rem 3rem;
+    min-height:calc(100vh - 64px);
+  }
+
+  .page-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    margin-bottom:1.5rem;
+    flex-wrap:wrap;
+    gap:.75rem;
+  }
+  .page-header h3{ font-weight:700; margin-bottom:.15rem; }
+  .page-header p{ color:var(--text-muted); margin:0; font-size:.92rem; }
+
+  .content-section{ display:none; }
+  .content-section.active{ display:block; animation:fadeIn .25s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- CARDS ---------- */
+  .card{
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:0 1px 2px rgba(15,23,42,.03);
+  }
+  .card-header{
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    border-radius:14px 14px 0 0 !important;
+    font-weight:600;
+  }
+
+  .nav-card{
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:1.5rem;
+    height:100%;
+    cursor:pointer;
+    background:#fff;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .nav-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 24px rgba(15,23,42,.08);
+    border-color:var(--primary);
+  }
+  .nav-card .icon-wrap{
+    width:52px; height:52px;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem;
+    margin-bottom:1rem;
+    color:#fff;
+  }
+  .nav-card h5{ font-weight:700; margin-bottom:.35rem; }
+  .nav-card p{ color:var(--text-muted); font-size:.87rem; margin-bottom:0; }
+
+  .bg-grad-primary{ background:linear-gradient(135deg,var(--primary),var(--secondary)); }
+  .bg-grad-success{ background:linear-gradient(135deg,#10B981,#059669); }
+  .bg-grad-warning{ background:linear-gradient(135deg,#F59E0B,#D97706); }
+  .bg-grad-danger{ background:linear-gradient(135deg,#EF4444,#B91C1C); }
+  .bg-grad-secondary{ background:linear-gradient(135deg,#1E40AF,#1E3A8A); }
+  .bg-grad-info{ background:linear-gradient(135deg,#0EA5E9,#0369A1); }
+  .bg-grad-teal{ background:linear-gradient(135deg,#14B8A6,#0F766E); }
+
+  /* ---------- COURSE CARDS ---------- */
+  .course-card{
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#fff;
+    padding:1.25rem;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+  }
+  .course-card h5{ font-weight:700; margin-bottom:.4rem; }
+  .course-card p{ color:var(--text-muted); font-size:.87rem; }
+  .course-card .course-meta{ flex-grow:1; }
+  .course-card .course-actions{ margin-top:1rem; }
+
+  /* ---------- TABLE ---------- */
+  .table thead th{
+    background:#F1F5F9;
+    color:var(--text-muted);
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    font-weight:700;
+    border-bottom:none;
+  }
+  .table td{ vertical-align:middle; font-size:.9rem; }
+  .table-responsive{ border-radius:12px; overflow:hidden; border:1px solid var(--border); }
+
+  .video-link{ color:var(--primary); font-size:.85rem; word-break:break-all; }
+
+  /* ---------- SPINNER OVERLAY ---------- */
+  .spinner-overlay{
+    position:fixed; inset:0;
+    background:rgba(248,250,252,.7);
+    z-index:2000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+  }
+  .spinner-overlay.show{ display:flex; }
+
+  /* ---------- TOASTS ---------- */
+  .toast-container{ z-index:2100; }
+
+  /* ---------- MISC ---------- */
+  .badge-soft-primary{ background:#EFF6FF; color:var(--primary); font-weight:600; }
+  .badge-soft-success{ background:#ECFDF5; color:var(--success); font-weight:600; }
+  .badge-soft-warning{ background:#FFFBEB; color:#B45309; font-weight:600; }
+  .badge-soft-danger{ background:#FEF2F2; color:var(--danger); font-weight:600; }
+  .badge-soft-secondary{ background:#EEF2FF; color:var(--secondary); font-weight:600; }
+
+  .form-label{ font-weight:600; font-size:.85rem; color:var(--text-dark); }
+  .required-star{ color:var(--danger); }
+
+  .empty-state{
+    text-align:center;
+    padding:3rem 1rem;
+    color:var(--text-muted);
+  }
+  .empty-state i{ font-size:2.2rem; color:#CBD5E1; margin-bottom:.75rem; display:block; }
+
+  .question-card{
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:1rem 1.25rem;
+    margin-bottom:.85rem;
+    background:#fff;
+  }
+  .question-card .form-check{
+    padding:.4rem .75rem .4rem 2.25rem;
+    border-radius:8px;
+    transition:background .15s ease;
+  }
+  .question-card .form-check:hover{ background:#F8FAFC; }
+  .question-card .form-check-input{ margin-top:.35rem; }
+  .question-card .form-check-label{ font-size:.9rem; }
+
+  /* ---------- LOGIN SCREEN ---------- */
+  .login-screen{
+    position:fixed;
+    inset:0;
+    background:var(--bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1500;
+    padding:1.5rem;
+  }
+  .login-card{
+    width:100%;
+    max-width:400px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:2.25rem;
+    box-shadow:0 12px 32px rgba(15,23,42,.08);
+  }
+  .login-brand{
+    display:flex;
+    align-items:center;
+    gap:.75rem;
+    margin-bottom:1.75rem;
+  }
+  .login-brand .brand-badge{
+    width:46px; height:46px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.35rem;
+  }
+  .login-brand-title{ font-weight:700; font-size:1.05rem; }
+  .login-brand-sub{ font-size:.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; }
+
+  @media (max-width: 991.98px){
+    .sidebar{ transform:translateX(-100%); }
+    .sidebar.show{ transform:translateX(0); box-shadow:0 0 0 100vmax rgba(0,0,0,.35); }
+    .main-content{ margin-left:0; }
+    .topbar .brand{ width:auto; }
+    .sidebar-toggle-btn{ display:inline-flex; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SPINNER -->
+<div class="spinner-overlay" id="spinnerOverlay">
+  <div class="spinner-border" style="width:3rem;height:3rem;color:var(--primary);" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
+
+<!-- ================= LOGIN SCREEN ================= -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="brand-badge"><i class="bi bi-mortarboard-fill"></i></div>
+      <div>
+        <div class="login-brand-title">LSCT</div>
+        <div class="login-brand-sub">Employee Portal</div>
+      </div>
+    </div>
+    <h5 class="fw-bold mb-1">Employee Login</h5>
+    <p class="text-muted mb-3" style="font-size:.88rem;">Enter your Employee ID to continue.</p>
+
+    <div class="alert alert-danger d-none" id="loginAlert" role="alert"></div>
+
+    <form id="loginForm" onsubmit="return loginEmployee(event)">
+      <div class="mb-3">
+        <label class="form-label">Employee ID <span class="required-star">*</span></label>
+        <input type="text" class="form-control" id="employeeIdInput" placeholder="e.g. EMP001" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">
+        <i class="bi bi-box-arrow-in-right"></i> Login
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= APP SHELL ================= -->
+<div id="appShell" style="display:none;">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="brand">
+      <button class="btn btn-sm btn-light sidebar-toggle-btn me-1" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="brand-badge"><i class="bi bi-mortarboard-fill"></i></div>
+      <div>
+        <div>LSCT</div>
+        <div class="brand-sub">Employee Portal</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="role-pill"><i class="bi bi-person-badge"></i> <span id="employeeIdDisplay">—</span></span>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-section-label">Menu</div>
+    <nav class="nav flex-column">
+      <a href="#" class="nav-link active" data-section="dashboard" onclick="return navTo(event,'dashboard')">
+        <i class="bi bi-grid-1x2-fill"></i> Dashboard
+      </a>
+      <a href="#" class="nav-link" data-section="mycourses" onclick="return navTo(event,'mycourses')">
+        <i class="bi bi-journal-bookmark-fill"></i> My Courses
+      </a>
+      <a href="#" class="nav-link" data-section="courseplayer" onclick="return navTo(event,'courseplayer')">
+        <i class="bi bi-play-circle-fill"></i> Course Player
+      </a>
+      <a href="#" class="nav-link" data-section="quiz" onclick="return navTo(event,'quiz')">
+        <i class="bi bi-patch-question-fill"></i> Quiz
+      </a>
+      <a href="#" class="nav-link" data-section="certificate" onclick="return navTo(event,'certificate')">
+        <i class="bi bi-patch-check-fill"></i> Certificate
+      </a>
+      <a href="#" class="nav-link logout-link" onclick="return handleLogoutClick(event)">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </nav>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- ================= DASHBOARD ================= -->
+    <section class="content-section active" id="section-dashboard">
+      <div class="page-header">
+        <div>
+          <h3>Dashboard</h3>
+          <p>Quick access to your learning modules.</p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="nav-card" onclick="navTo(event,'mycourses')">
+            <div class="icon-wrap bg-grad-primary"><i class="bi bi-journal-bookmark-fill"></i></div>
+            <h5>My Courses</h5>
+            <p>Browse the courses assigned to you.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="nav-card" onclick="navTo(event,'quiz')">
+            <div class="icon-wrap bg-grad-warning"><i class="bi bi-patch-question-fill"></i></div>
+            <h5>Quiz</h5>
+            <p>Take the quiz for your current course.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="nav-card" onclick="navTo(event,'certificate')">
+            <div class="icon-wrap bg-grad-success"><i class="bi bi-patch-check-fill"></i></div>
+            <h5>Certificate</h5>
+            <p>View your certificate after course completion.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MY COURSES ================= -->
+    <section class="content-section" id="section-mycourses">
+      <div class="page-header">
+        <div>
+          <h3>My Courses</h3>
+          <p>Courses available to you.</p>
+        </div>
+        <button class="btn btn-outline-secondary" onclick="loadCourses()">
+          <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+      </div>
+
+      <div class="row g-4" id="myCoursesContainer">
+        <div class="col-12">
+          <div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading courses...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= COURSE PLAYER ================= -->
+    <section class="content-section" id="section-courseplayer">
+      <div class="page-header">
+        <div>
+          <h3>Course Player</h3>
+          <p>Review the course material before taking the quiz.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body" id="coursePlayerContainer">
+          <div class="empty-state"><i class="bi bi-play-circle"></i>Select a course from "My Courses" to begin.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= QUIZ ================= -->
+    <section class="content-section" id="section-quiz">
+      <div class="page-header">
+        <div>
+          <h3>Quiz</h3>
+          <p>Answer every question, then submit your quiz.</p>
+        </div>
+      </div>
+
+      <div id="quizContainer">
+        <div class="empty-state"><i class="bi bi-patch-question"></i>Select a course and click "Start Quiz" to begin.</div>
+      </div>
+
+      <div class="card mt-4 d-none" id="quizResultCard">
+        <div class="card-header"><i class="bi bi-clipboard-check"></i> Quiz Result</div>
+        <div class="card-body">
+          <div id="quizResultOutput"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CERTIFICATE ================= -->
+    <section class="content-section" id="section-certificate">
+      <div class="page-header">
+        <div>
+          <h3>Certificate</h3>
+          <p>Your certificate, if one has been issued.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body" id="certificateContainer">
+          <div class="empty-state"><i class="bi bi-patch-check"></i>Loading...</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const API_BASE = "https://1jwu7qfyrb.execute-api.ap-south-1.amazonaws.com/prod";
+
+let currentEmployeeId = null;
+let coursesCache = [];
+let currentCourse = null;
+let quizQuestions = [];
+let selectedAnswers = {};
+let lastQuizResponse = null;
+
+/* ---------------- BACKEND FIELD MAPPING ----------------
+   If the backend uses different field names, update the
+   values below only — the functions that use them do not
+   need to change.
+------------------------------------------------------- */
+const API_FIELDS = {
+  login: {
+    requestKey: 'employee_id',                          // key sent in the POST /employee/login body
+    responseIdKeys: ['employee_id', 'employeeId', 'id']  // possible keys the response may use for the employee id
+  },
+  quiz: {
+    questionKeys: ['question', 'question_text', 'text'],       // possible keys for the question text
+    optionsKeys: ['options', 'choices'],                        // possible keys for the options array
+    questionIdKeys: ['question_id', 'id', 'qid']                // possible keys for the question identifier
+  },
+  submit: {
+    employeeIdKey: 'employee_id',      // key used for the employee id in the submit payload
+    answersKey: 'answers',             // key used for the answers array in the submit payload
+    answerQuestionIdKey: 'question_id',// key used per-answer to identify the question
+    answerValueKey: 'selected_option'  // key used per-answer for the chosen option key (A/B/C/D)
+  }
+};
+
+function getFieldValue(obj, keys, fallback){
+  if (!obj) return fallback;
+  for (const key of keys){
+    if (obj[key] !== undefined && obj[key] !== null && obj[key] !== '') return obj[key];
+  }
+  return fallback;
+}
+
+function getFieldArray(obj, keys, fallback){
+  if (!obj) return fallback;
+  for (const key of keys){
+    if (Array.isArray(obj[key])) return obj[key];
+  }
+  return fallback;
+}
+
+/* ---------------- UTILITIES ---------------- */
+
+function showSpinner(){ document.getElementById('spinnerOverlay').classList.add('show'); }
+function hideSpinner(){ document.getElementById('spinnerOverlay').classList.remove('show'); }
+
+function showToast(message, type = 'primary'){
+  const iconMap = {
+    primary: 'bi-info-circle-fill',
+    success: 'bi-check-circle-fill',
+    danger: 'bi-x-circle-fill',
+    warning: 'bi-exclamation-triangle-fill'
+  };
+  const id = 'toast-' + Date.now();
+  const toastHtml = `
+    <div id="${id}" class="toast align-items-center text-white bg-${type} border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi ${iconMap[type] || iconMap.primary} me-2"></i>${message}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>`;
+  document.getElementById('toastContainer').insertAdjacentHTML('beforeend', toastHtml);
+  const toastEl = document.getElementById(id);
+  const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+  toast.show();
+  toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
+}
+
+async function apiRequest(method, path, body){
+  showSpinner();
+  try {
+    const options = { method, headers: { 'Content-Type': 'application/json' } };
+    if (body !== undefined) options.body = JSON.stringify(body);
+    const res = await fetch(API_BASE + path, options);
+    let data = null;
+    try { data = await res.json(); } catch(e) { data = null; }
+    if (!res.ok) {
+      const msg = (data && (data.message || data.error)) || `Request failed (${res.status})`;
+      throw new Error(msg);
+    }
+    return data;
+  } finally {
+    hideSpinner();
+  }
+}
+
+function escapeHtml(str){
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;');
+}
+
+function prettyKey(key){
+  return String(key).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function isPercentField(key){
+  if (isDateField(key)) return false;
+  return /completion|percentage|progress|score/i.test(key);
+}
+
+function isDateField(key){
+  return /date|_at$/i.test(key);
+}
+
+function formatDateValue(val){
+  const d = new Date(val);
+  if (isNaN(d.getTime())) return val;
+  const day = d.getDate();
+  const month = d.toLocaleString('en-US', { month: 'long' });
+  const year = d.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
+function isStatusField(key){
+  return /status|result|pass/i.test(key);
+}
+
+function statusBadgeClass(val){
+  const v = String(val).toLowerCase();
+  if (['pass','completed','verified','active','valid','true'].some(s => v.includes(s))) return 'success';
+  if (['pending','progress','ongoing'].some(s => v.includes(s))) return 'warning';
+  if (['fail','invalid','inactive','not started','false'].some(s => v.includes(s))) return 'danger';
+  return 'secondary';
+}
+
+function renderKeyValueTable(elementId, data){
+  const container = document.getElementById(elementId);
+  if (!data || typeof data !== 'object' || Array.isArray(data)){
+    container.innerHTML = `<div class="empty-state"><i class="bi bi-inbox"></i>No data returned by the backend.</div>`;
+    return;
+  }
+  const keys = Object.keys(data);
+  if (!keys.length){
+    container.innerHTML = `<div class="empty-state"><i class="bi bi-inbox"></i>No data returned by the backend.</div>`;
+    return;
+  }
+  const rowsHtml = keys.map(k => {
+    let val = data[k];
+    let valHtml;
+    if (val === null || val === undefined || val === ''){
+      valHtml = '—';
+    } else if (val !== null && typeof val === 'object'){
+      valHtml = escapeHtml(JSON.stringify(val));
+    } else if (isStatusField(k)){
+      const cls = statusBadgeClass(val);
+      valHtml = `<span class="badge bg-${cls} fs-6">${escapeHtml(val)}</span>`;
+    } else if (isDateField(k)){
+      valHtml = escapeHtml(formatDateValue(val));
+    } else if (isPercentField(k) && !isNaN(parseFloat(val))){
+      const num = Math.min(100, Math.max(0, parseFloat(val)));
+      const barColor = num >= 75 ? 'bg-success' : num >= 40 ? 'bg-warning' : 'bg-danger';
+      valHtml = `<div class="d-flex align-items-center gap-2">
+          <div class="progress flex-grow-1" style="height:8px; max-width:200px;">
+            <div class="progress-bar ${barColor}" style="width:${num}%"></div>
+          </div>
+          <span class="small fw-semibold">${num} / 100</span>
+        </div>`;
+    } else {
+      valHtml = escapeHtml(val);
+    }
+    return `<tr><th class="text-muted" style="width:220px;">${escapeHtml(prettyKey(k))}</th><td>${valHtml}</td></tr>`;
+  }).join('');
+
+  container.innerHTML = `<div class="table-responsive"><table class="table mb-0">${rowsHtml}</table></div>`;
+}
+
+/* ---------------- SESSION / LOGIN / LOGOUT ---------------- */
+
+function showLoginScreen(){
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginAlert').classList.add('d-none');
+  document.getElementById('loginForm').reset();
+}
+
+function showAppShell(employeeId){
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'block';
+  document.getElementById('employeeIdDisplay').textContent = employeeId;
+  navTo(null, 'dashboard');
+}
+
+async function loginEmployee(evt){
+  evt.preventDefault();
+  const employeeId = document.getElementById('employeeIdInput').value.trim();
+  const alertBox = document.getElementById('loginAlert');
+  alertBox.classList.add('d-none');
+
+  if (!employeeId){
+    return false;
+  }
+
+  try {
+    const payload = { [API_FIELDS.login.requestKey]: employeeId };
+    const data = await apiRequest('POST', '/employee/login', payload);
+    const resolvedId = getFieldValue(data, API_FIELDS.login.responseIdKeys, employeeId);
+    currentEmployeeId = resolvedId;
+    sessionStorage.setItem('employeeId', resolvedId);
+    showToast('Logged in successfully.', 'success');
+    showAppShell(resolvedId);
+  } catch (err) {
+    alertBox.textContent = err.message;
+    alertBox.classList.remove('d-none');
+  }
+  return false;
+}
+
+function handleLogoutClick(evt){
+  if (evt) evt.preventDefault();
+  logoutEmployee();
+  return false;
+}
+
+function logoutEmployee(){
+  sessionStorage.removeItem('employeeId');
+  sessionStorage.removeItem('lastQuizResponse');
+  currentEmployeeId = null;
+  coursesCache = [];
+  currentCourse = null;
+  quizQuestions = [];
+  selectedAnswers = {};
+  lastQuizResponse = null;
+  showToast('You have been logged out.', 'primary');
+  showLoginScreen();
+}
+
+/* ---------------- NAVIGATION ---------------- */
+
+function navTo(evt, section){
+  if (evt) evt.preventDefault();
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + section).classList.add('active');
+
+  document.querySelectorAll('.sidebar .nav-link[data-section]').forEach(l => l.classList.remove('active'));
+  const link = document.querySelector(`.sidebar .nav-link[data-section="${section}"]`);
+  if (link) link.classList.add('active');
+
+  if (window.innerWidth < 992) {
+    document.getElementById('sidebar').classList.remove('show');
+  }
+
+  if (section === 'mycourses') loadCourses();
+  if (section === 'courseplayer') renderCoursePlayer();
+  if (section === 'quiz') renderQuizEntry();
+  if (section === 'certificate') loadCertificate();
+
+  return false;
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('show');
+}
+
+/* ---------------- MY COURSES ---------------- */
+
+async function loadCourses(){
+  const container = document.getElementById('myCoursesContainer');
+  container.innerHTML = `<div class="col-12"><div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading courses...</div></div>`;
+  try {
+    const data = await apiRequest('GET', `/employee/${encodeURIComponent(currentEmployeeId)}/courses`);
+    coursesCache = Array.isArray(data) ? data : (data && data.courses) || [];
+    renderCourseCards();
+  } catch (err) {
+    container.innerHTML = `<div class="col-12"><div class="empty-state"><i class="bi bi-exclamation-triangle"></i>${escapeHtml(err.message)}</div></div>`;
+    showToast('Failed to load courses: ' + err.message, 'danger');
+  }
+}
+
+function renderCourseCards(){
+  const container = document.getElementById('myCoursesContainer');
+  if (!coursesCache.length){
+    container.innerHTML = `<div class="col-12"><div class="empty-state"><i class="bi bi-journal-x"></i>No courses have been assigned yet.</div></div>`;
+    return;
+  }
+  container.innerHTML = coursesCache.map(c => {
+    const id = c.course_id ?? c.id ?? '';
+    const title = c.title ?? '—';
+    const desc = c.description ?? '—';
+    const passingScore = c.passing_score ?? c.passingScore ?? '—';
+    const videoUrl = c.video_url ?? c.external_video_url ?? c.videoUrl ?? '';
+    return `
+      <div class="col-md-6 col-lg-4">
+        <div class="course-card">
+          <div class="course-meta">
+            <h5>${escapeHtml(title)}</h5>
+            <p>${escapeHtml(desc)}</p>
+            <span class="badge badge-soft-success"><i class="bi bi-bullseye"></i> Passing Score: ${escapeHtml(passingScore)}%</span>
+          </div>
+          <div class="course-actions">
+            <button class="btn btn-primary w-100" onclick="viewCourseDetails('${escapeHtml(id)}')">
+              <i class="bi bi-arrow-right-circle"></i> View Details
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function viewCourseDetails(courseId){
+  const course = coursesCache.find(c => String(c.course_id ?? c.id) === String(courseId));
+  if (!course){
+    showToast('Course details could not be found.', 'danger');
+    return;
+  }
+  currentCourse = course;
+  quizQuestions = [];
+  selectedAnswers = {};
+  document.getElementById('quizResultCard').classList.add('d-none');
+  navTo(null, 'courseplayer');
+}
+
+/* ---------------- COURSE PLAYER ---------------- */
+
+function renderCoursePlayer(){
+  const container = document.getElementById('coursePlayerContainer');
+  if (!currentCourse){
+    container.innerHTML = `<div class="empty-state"><i class="bi bi-play-circle"></i>Select a course from "My Courses" to begin.</div>`;
+    return;
+  }
+  const title = currentCourse.title ?? '—';
+  const desc = currentCourse.description ?? '—';
+  const videoUrl = currentCourse.external_video_url ?? '';
+
+  container.innerHTML = `
+    <h4 class="fw-bold mb-2">${escapeHtml(title)}</h4>
+    <p class="text-muted">${escapeHtml(desc)}</p>
+    ${videoUrl ? `
+      <a href="${escapeHtml(videoUrl)}" target="_blank" class="btn btn-outline-primary mb-3">
+        <i class="bi bi-play-circle"></i> Watch Video
+      </a>` : `<p class="text-muted fst-italic">No video URL provided.</p>`}
+    <div>
+      <button class="btn btn-primary" onclick="startQuiz()">
+        <i class="bi bi-patch-question"></i> Start Quiz
+      </button>
+    </div>`;
+}
+
+function startQuiz(){
+  if (!currentCourse){
+    showToast('Please select a course first.', 'warning');
+    return;
+  }
+  quizQuestions = [];
+  selectedAnswers = {};
+  document.getElementById('quizResultCard').classList.add('d-none');
+  navTo(null, 'quiz');
+}
+
+/* ---------------- QUIZ ---------------- */
+
+function renderQuizEntry(){
+  if (!currentCourse){
+    document.getElementById('quizContainer').innerHTML =
+      `<div class="empty-state"><i class="bi bi-patch-question"></i>Select a course and click "Start Quiz" to begin.</div>`;
+    return;
+  }
+  loadQuiz();
+}
+
+async function loadQuiz(){
+  const container = document.getElementById('quizContainer');
+  if (!currentCourse){
+    container.innerHTML = `<div class="empty-state"><i class="bi bi-patch-question"></i>Select a course and click "Start Quiz" to begin.</div>`;
+    return;
+  }
+  const courseId = currentCourse.course_id ?? currentCourse.id;
+  container.innerHTML = `<div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading quiz questions...</div>`;
+  document.getElementById('quizResultCard').classList.add('d-none');
+
+  try {
+    const data = await apiRequest('GET', `/quiz/${encodeURIComponent(courseId)}/questions`);
+    quizQuestions = Array.isArray(data) ? data : (data && data.questions) || [];
+    selectedAnswers = {};
+
+    if (!quizQuestions.length){
+      container.innerHTML = `<div class="empty-state"><i class="bi bi-patch-question"></i>No quiz questions are available for this course yet.</div>`;
+      return;
+    }
+
+    const questionsHtml = quizQuestions.map((q, idx) => {
+      const questionText = getFieldValue(q, API_FIELDS.quiz.questionKeys, '—');
+      const optionsObj = q.options || {};
+      const optionEntries = Object.entries(optionsObj);
+      const optionsHtml = optionEntries.map(([optKey, optValue]) => `
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="question_${idx}" id="q${idx}_opt${optKey}"
+                 value="${escapeHtml(optKey)}" onchange="selectAnswer(${idx}, this.value)">
+          <label class="form-check-label" for="q${idx}_opt${optKey}">${escapeHtml(optKey)}. ${escapeHtml(optValue)}</label>
+        </div>`).join('');
+      return `
+        <div class="question-card">
+          <div class="fw-semibold mb-2"><span class="badge badge-soft-primary me-2">Q${idx + 1}</span>${escapeHtml(questionText)}</div>
+          <div class="d-flex flex-column">${optionsHtml}</div>
+        </div>`;
+    }).join('');
+
+    container.innerHTML = `
+      ${questionsHtml}
+      <button class="btn btn-primary mt-2" onclick="submitQuiz()">
+        <i class="bi bi-send-check"></i> Submit Quiz
+      </button>`;
+  } catch (err) {
+    container.innerHTML = `<div class="empty-state"><i class="bi bi-exclamation-triangle"></i>${escapeHtml(err.message)}</div>`;
+    showToast('Failed to load quiz questions: ' + err.message, 'danger');
+  }
+}
+
+function selectAnswer(questionIdx, value){
+  selectedAnswers[questionIdx] = value;
+}
+
+async function submitQuiz(){
+  if (!currentCourse){
+    showToast('Please select a course first.', 'warning');
+    return;
+  }
+  if (!quizQuestions.length){
+    showToast('No quiz questions loaded.', 'warning');
+    return;
+  }
+  if (Object.keys(selectedAnswers).length < quizQuestions.length){
+    showToast('Please answer all questions before submitting.', 'warning');
+    return;
+  }
+
+  const courseId = currentCourse.course_id ?? currentCourse.id;
+  const answers = quizQuestions.map((q, idx) => ({
+    [API_FIELDS.submit.answerQuestionIdKey]: getFieldValue(q, API_FIELDS.quiz.questionIdKeys, idx),
+    [API_FIELDS.submit.answerValueKey]: selectedAnswers[idx]
+  }));
+
+  const payload = {
+    [API_FIELDS.submit.employeeIdKey]: currentEmployeeId,
+    [API_FIELDS.submit.answersKey]: answers
+  };
+
+  try {
+    const data = await apiRequest('POST', `/quiz/${encodeURIComponent(courseId)}/submit`, payload);
+
+    lastQuizResponse = data;
+    sessionStorage.setItem('lastQuizResponse', JSON.stringify(data));
+
+    const resultCard = document.getElementById('quizResultCard');
+    resultCard.classList.remove('d-none');
+    renderKeyValueTable('quizResultOutput', data);
+
+    showToast('Quiz submitted successfully.', 'success');
+  } catch (err) {
+    showToast('Failed to submit quiz: ' + err.message, 'danger');
+  }
+}
+
+/* ---------------- CERTIFICATE ---------------- */
+
+function extractCertificateData(data){
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+
+  // Prefer a nested object whose key name indicates it holds certificate info.
+  for (const key of Object.keys(data)){
+    if (/certificate/i.test(key) && data[key] && typeof data[key] === 'object' && !Array.isArray(data[key])){
+      return data[key];
+    }
+  }
+
+  // Otherwise, if any top-level key references a certificate, treat the whole
+  // response as the certificate record (fields are returned flat).
+  const hasCertificateField = Object.keys(data).some(k => /certificate/i.test(k));
+  return hasCertificateField ? data : null;
+}
+
+async function loadCertificate(){
+  const container = document.getElementById('certificateContainer');
+  container.innerHTML = `<div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading certificate...</div>`;
+
+  if (!currentEmployeeId){
+    container.innerHTML = `<div class="empty-state"><i class="bi bi-patch-check"></i>Certificate not available.</div>`;
+    return;
+  }
+
+  try {
+    const data = await apiRequest('GET', `/employee/${encodeURIComponent(currentEmployeeId)}/certificate`);
+    renderKeyValueTable('certificateContainer', data);
+  } catch (err) {
+    container.innerHTML = `<div class="empty-state"><i class="bi bi-patch-check"></i>Certificate not available.</div>`;
+  }
+}
+
+/* ---------------- INIT ---------------- */
+
+document.addEventListener('DOMContentLoaded', () => {
+  const storedEmployeeId = sessionStorage.getItem('employeeId');
+  const storedQuizResponse = sessionStorage.getItem('lastQuizResponse');
+  if (storedQuizResponse){
+    try { lastQuizResponse = JSON.parse(storedQuizResponse); } catch (e) { lastQuizResponse = null; }
+  }
+  if (storedEmployeeId){
+    currentEmployeeId = storedEmployeeId;
+    showAppShell(storedEmployeeId);
+  } else {
+    showLoginScreen();
+  }
+});
+</script>
+</body>
+</html>
