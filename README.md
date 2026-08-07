@@ -204,19 +204,21 @@ aws-employee-learning-skill-certification-tracker/
 │       └── deploy.yml
 │
 ├── architecture/
+│   └── architecture-diagram.png
 │
 ├── frontend/
 │
 ├── lambda/
 │
-├── load-testing/
+├── artillery/
+│   ├── load-test.yml
+│   ├── artillery-test.png
+│   └── report.pdf
 │
 ├── screenshots/
 │   ├── aws/
 │   ├── employee/
 │   └── hr/
-│
-├── tests/
 │
 └── README.md
 ```
