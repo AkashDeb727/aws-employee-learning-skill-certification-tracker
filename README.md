@@ -187,7 +187,7 @@ To evaluate the application's performance under concurrent user traffic, load te
 - P99 Latency
 
 <p align="center">
-    <img src="screenshots/load-test/artillery-report.png" alt="Artillery Load Test Report" width="100%">
+    <img src="artillery/artillery-test.png" alt="Artillery Load Test" width="100%">
 </p>
 
 The load test helped validate the responsiveness of the serverless backend under concurrent traffic, surface potential bottlenecks, and confirm stable API performance under simulated real-world usage.
